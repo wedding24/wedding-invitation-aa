@@ -306,6 +306,206 @@
     background: linear-gradient(90deg, #d23669, #ff6b81);
   }
 </style>
+
+    <script>
+  // 1. Имитация открывания открытки
+  function setupCardFold() {
+    const card = document.querySelector('.invitation-card');
+    const cardInner = document.createElement('div');
+    cardInner.className = 'card-inner';
+    
+    // Перемещаем содержимое карточки внутрь
+    while (card.firstChild) {
+      cardInner.appendChild(card.firstChild);
+    }
+    card.appendChild(cardInner);
+    
+    // Положение "закрыто" (сложенная открытка)
+    card.style.transform = 'rotateY(-120deg) rotateX(10deg)';
+    card.style.transformOrigin = 'left center';
+    card.style.perspective = '1000px';
+    
+    // Анимация открывания через 1 секунду
+    setTimeout(() => {
+      card.style.transition = 'transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
+      card.style.transform = 'rotateY(0) rotateX(0)';
+      
+      // После открытия включаем физику
+      setTimeout(() => setupCardPhysics(card), 1500);
+    }, 1000);
+  }
+
+  // 2. Физика открытки (реакция на курсор)
+  function setupCardPhysics(card) {
+    let isDragging = false;
+    let startX, startY;
+    let rotateY = 0, rotateX = 0;
+    
+    // Начало перетаскивания
+    card.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      card.style.transition = 'none';
+    });
+    
+    // Движение курсора
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const moveX = e.clientX - startX;
+      const moveY = e.clientY - startY;
+      
+      rotateY = moveX / 3;
+      rotateX = -moveY / 3;
+      
+      // Ограничение углов
+      rotateY = Math.max(-15, Math.min(15, rotateY));
+      rotateX = Math.max(-10, Math.min(10, rotateX));
+      
+      card.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+    });
+    
+    // Завершение перетаскивания
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      // Возврат в исходное положение с пружинящим эффектом
+      card.style.transition = 'transform 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
+      card.style.transform = 'rotateY(0) rotateX(0)';
+      
+      setTimeout(() => {
+        card.style.transition = 'transform 0.3s ease-out';
+      }, 800);
+    });
+    
+    // Реакция на наведение (легкое подрагивание)
+    card.addEventListener('mouseenter', () => {
+      if (isDragging) return;
+      
+      card.style.transition = 'transform 0.3s ease-out';
+      const randY = (Math.random() * 2 - 1);
+      const randX = (Math.random() * 2 - 1);
+      card.style.transform = `rotateY(${randY}deg) rotateX(${randX}deg)`;
+      
+      setTimeout(() => {
+        card.style.transform = 'rotateY(0) rotateX(0)';
+      }, 300);
+    });
+  }
+
+  // 3. Эффект бумажной текстуры
+  function addPaperTexture() {
+    const texture = document.createElement('div');
+    texture.className = 'paper-texture';
+    document.querySelector('.invitation-card').appendChild(texture);
+    
+    // Микро-движения текстуры
+    setInterval(() => {
+      const x = (Math.random() * 2 - 1) * 0.3;
+      const y = (Math.random() * 2 - 1) * 0.3;
+      texture.style.transform = `translate(${x}px, ${y}px)`;
+    }, 3000);
+  }
+
+  // 4. Имитация толщины открытки
+  function addCardThickness() {
+    const card = document.querySelector('.invitation-card');
+    const cardBack = document.createElement('div');
+    cardBack.className = 'card-back';
+    card.appendChild(cardBack);
+    
+    const cardEdge = document.createElement('div');
+    cardEdge.className = 'card-edge';
+    card.appendChild(cardEdge);
+  }
+
+  // Инициализация после загрузки
+  window.addEventListener('DOMContentLoaded', () => {
+    setupCardFold();
+    addPaperTexture();
+    addCardThickness();
+  });
+</script>
+
+<style>
+  /* Стили для реалистичной открытки */
+  .invitation-card {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    min-height: 400px;
+    margin: 50px auto;
+    background: #fff9f5;
+    border-radius: 2px;
+    box-shadow: 
+      0 2px 5px rgba(0,0,0,0.1),
+      0 5px 15px rgba(0,0,0,0.1),
+      0 10px 30px rgba(0,0,0,0.2);
+    transform-style: preserve-3d;
+    cursor: grab;
+    overflow: hidden;
+  }
+  
+  .card-inner {
+    padding: 40px;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .paper-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.05 0"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.3"/></svg>');
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 3s ease-out;
+  }
+  
+  .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0e6dd;
+    transform: translateZ(-2px);
+    border-radius: 2px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+  }
+  
+  .card-edge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #e2d5cc 0%, #d8c9bf 50%, #e2d5cc 100%);
+    transform: translateZ(-1px);
+    border-radius: 2px;
+  }
+  
+  .invitation-card:active {
+    cursor: grabbing;
+  }
+  
+  /* Эффект внутренней тени при открытии */
+  @keyframes cardOpen {
+    0% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+    50% { box-shadow: inset 0 0 50px rgba(0,0,0,0.1); }
+    100% { box-shadow: 0 2px 5px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.2); }
+  }
+  
+  .invitation-card {
+    animation: cardOpen 1.5s ease-out forwards;
+  }
+</style>
     
 </body>
 </html>
