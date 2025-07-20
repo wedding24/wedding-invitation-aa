@@ -181,7 +181,7 @@
         <div class="header-image">
             <div class="overlay"></div>
             <div class="couple-names">
-                <h1 class="important-text">Алиса & Алексей</h1>
+                <h1>Алиса & Алексей</h1>
                 <h2>24/09/2025</h2>
             </div>
         </div>
@@ -234,23 +234,6 @@
       text.style.animation = 'textBreath 3s ease-in-out infinite';
     });
 
-    // 3. Эффект печатной машинки для заголовка
-    const typewriterText = document.querySelector('.typewriter');
-    if (typewriterText) {
-      const text = typewriterText.textContent;
-      typewriterText.textContent = '';
-      
-      let i = 0;
-      const typing = setInterval(() => {
-        if (i < text.length) {
-          typewriterText.textContent += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(typing);
-        }
-      }, 100);
-    }
-
     // 4. Движение текста при наведении
     const hoverText = document.querySelectorAll('.hover-move');
     hoverText.forEach(text => {
@@ -282,11 +265,6 @@
   @keyframes textBreath {
     0%, 100% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.03); opacity: 0.9; }
-  }
-  
-  .important-text {
-    display: inline-block;
-    transition: all 0.3s ease;
   }
   
   .hover-move {
