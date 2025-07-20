@@ -307,34 +307,5 @@
   }
 </style>
 
-    <script>
-  // 1. Имитация открывания открытки
-  function setupCardFold() {
-    const card = document.querySelector('.invitation-card');
-    const cardInner = document.createElement('div');
-    cardInner.className = 'card-inner';
-    
-    // Перемещаем содержимое карточки внутрь
-    while (card.firstChild) {
-      cardInner.appendChild(card.firstChild);
-    }
-    card.appendChild(cardInner);
-    
-    // Положение "закрыто" (сложенная открытка)
-    card.style.transform = 'rotateY(-120deg) rotateX(10deg)';
-    card.style.transformOrigin = 'left center';
-    card.style.perspective = '1000px';
-    
-    // Анимация открывания через 1 секунду
-    setTimeout(() => {
-      card.style.transition = 'transform 1.5s cubic-bezier(0.25, 1, 0.5, 1)';
-      card.style.transform = 'rotateY(0) rotateX(0)';
-      
-      // После открытия включаем физику
-      setTimeout(() => setupCardPhysics(card), 1500);
-    }, 1000);
-  }
-</style>
-    
 </body>
 </html>
