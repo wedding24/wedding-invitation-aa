@@ -211,5 +211,197 @@
 
         </div>
     </div>
+
+<script>
+  // 1. Анимация плавающих элементов (сердечки, цветочки)
+  function createFloatingElements() {
+    const container = document.body;
+    const symbols = ['❤', '✿', '❀', '❁', '🌸', '💮'];
+    
+    for (let i = 0; i < 20; i++) {
+      const element = document.createElement('div');
+      element.className = 'floating-element';
+      element.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+      element.style.left = Math.random() * 100 + 'vw';
+      element.style.top = Math.random() * 100 + 'vh';
+      element.style.fontSize = (15 + Math.random() * 25) + 'px';
+      element.style.color = `hsl(${Math.random() * 60 + 330}, 70%, 70%)`;
+      element.style.animationDuration = (8 + Math.random() * 12) + 's';
+      element.style.animationDelay = Math.random() * 5 + 's';
+      container.appendChild(element);
+    }
+  }
+
+  // 2. Плавное покачивание карточки приглашения
+  function setupCardTilt() {
+    const card = document.querySelector('.invitation-card');
+    
+    if (card) {
+      card.addEventListener('mousemove', (e) => {
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 15;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 15;
+        card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateY(0) rotateX(0)';
+      });
+    }
+  }
+
+  // 3. Анимация появления элементов при скролле
+  function setupScrollAnimations() {
+    const animateElements = document.querySelectorAll('.scroll-animate');
+    
+    function checkScroll() {
+      animateElements.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight * 0.8) {
+          el.classList.add('animated');
+        }
+      });
+    }
+    
+    window.addEventListener('scroll', checkScroll);
+    window.addEventListener('load', checkScroll);
+  }
+
+  // 4. Эффект "дыхания" для важных элементов
+  function addBreathingEffect() {
+    const breathingElements = document.querySelectorAll('.breathing');
+    
+    breathingElements.forEach(el => {
+      el.style.animation = `breathing 4s ease-in-out infinite`;
+      el.style.animationDelay = `${Math.random() * 2}s`;
+    });
+  }
+
+  // 5. Интерактивные элементы (нажатие на кнопку)
+  function setupInteractiveButtons() {
+    const buttons = document.querySelectorAll('.interactive-btn');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+        }, 200);
+        
+        // Эффект конфетти при нажатии
+        createConfetti(this.getBoundingClientRect().left + this.offsetWidth/2, 
+                      this.getBoundingClientRect().top);
+      });
+    });
+  }
+
+  // 6. Эффект конфетти
+  function createConfetti(x, y) {
+    const colors = ['#ff6b81', '#ffb8c6', '#d23669', '#ff8fa3', '#ffd6e0'];
+    
+    for (let i = 0; i < 30; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = x + 'px';
+      confetti.style.top = y + 'px';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      document.body.appendChild(confetti);
+      
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 3 + Math.random() * 5;
+      const rotation = Math.random() * 360;
+      
+      let posX = 0;
+      let posY = 0;
+      let opacity = 1;
+      
+      const animate = () => {
+        posX += Math.cos(angle) * velocity;
+        posY += Math.sin(angle) * velocity + 0.5; // гравитация
+        opacity -= 0.02;
+        
+        confetti.style.transform = `translate(${posX}px, ${posY}px) rotate(${rotation}deg)`;
+        confetti.style.opacity = opacity;
+        
+        if (opacity > 0) {
+          requestAnimationFrame(animate);
+        } else {
+          confetti.remove();
+        }
+      };
+      
+      animate();
+    }
+  }
+
+  // Инициализация всех анимаций после загрузки страницы
+  window.addEventListener('DOMContentLoaded', () => {
+    createFloatingElements();
+    setupCardTilt();
+    setupScrollAnimations();
+    addBreathingEffect();
+    setupInteractiveButtons();
+  });
+</script>
+
+<style>
+  /* Стили для анимаций (добавьте в <head> или в конец <body>) */
+  .floating-element {
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+    animation: floating linear infinite;
+    opacity: 0.7;
+  }
+  
+  @keyframes floating {
+    0% { transform: translateY(100vh) rotate(0deg); }
+    100% { transform: translateY(-100px) rotate(360deg); }
+  }
+  
+  .invitation-card {
+    transition: transform 0.5s ease-out;
+    transform-style: preserve-3d;
+  }
+  
+  .scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .scroll-animate.animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .breathing {
+    animation: breathing 4s ease-in-out infinite;
+  }
+  
+  @keyframes breathing {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+  
+  .interactive-btn {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .interactive-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+  }
+</style>
+    
 </body>
 </html>
