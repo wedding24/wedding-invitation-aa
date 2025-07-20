@@ -55,6 +55,15 @@
 /* Разные задержки */
 .delay-1 { animation-delay: 0.3s; }
 .delay-2 { animation-delay: 0.6s; }
+
+        @keyframes gentleMove {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+.moving-element {
+  animation: gentleMove 5s ease-in-out infinite;
+}
         
         .header-image {
             width: 100%;
