@@ -236,23 +236,24 @@
 <div id="matrix-text" style="font-size:24px;font-family:monospace"></div>
 
 <script>
-  const chars = "01アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
-  const element = document.getElementById("matrix-text");
-  let iterations = 0;
-  
-  function matrixEffect() {
-    if(iterations++ < 30) {
-      let text = "";
-      for(let i = 0; i < 20; i++) {
-        text += chars[Math.floor(Math.random() * chars.length)];
-      }
-      element.innerHTML = text;
-      setTimeout(matrixEffect, 100);
-    } else {
-      element.innerHTML = "Добро пожаловать в матрицу";
-    }
+  // Массив с эмодзи для смены
+  const dressCodeEmojis = ["👔", "👗", "👠", "🎩", "👞", "👒"];
+  let currentEmojiIndex = 0;
+  const emojiElement = document.getElementById("dress-code-emoji");
+
+  // Функция смены эмодзи
+  function rotateEmoji() {
+    currentEmojiIndex = (currentEmojiIndex + 1) % dressCodeEmojis.length;
+    emojiElement.textContent = dressCodeEmojis[currentEmojiIndex];
+    
+    // Добавляем анимацию при смене
+    emojiElement.style.animation = "none";
+    void emojiElement.offsetWidth; // Триггер перезапуска анимации
+    emojiElement.style.animation = "emojiChange 0.5s";
   }
-  matrixEffect();
+
+  // Запускаем смену каждые 2 секунды
+  setInterval(rotateEmoji, 2000);
 </script>
     
 </body>
