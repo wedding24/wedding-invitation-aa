@@ -106,7 +106,7 @@
             font-weight: 700;
             letter-spacing: 2px;
         }
-        
+
         .couple-names h2 {
             font-family: 'Playfair Display', serif;
             font-size: 1.5rem;
@@ -196,7 +196,21 @@
 <div class="content" style="padding: 20px;">
   <div class="date-place" style="margin-top: 30px;">
             <h3 class="text-line">Дорогие наши!</h3>
-        
+        <script>
+  // Появляется через 1 секунду после загрузки страницы
+  setTimeout(() => {
+    document.getElementById('delayed-header').style.animation = "fadeInFromTop 1s ease-out forwards";
+  }, 1000);
+</script>
+
+<style>
+  @keyframes fadeInFromTop {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
            <div style="font-family: Arial; color: #333; max-width: 600px;">
                 <p style="margin: 0; padding: 0; text-align: left; text-align: justify;>Мы с радостью приглашаем вас наше торжество!<br>
                 Праздник пройдет в уютном доме, где соберутся только самые близкие люди. Сразу по приезду сразу можно будет остановиться в самом доме.</p>
