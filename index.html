@@ -233,6 +233,27 @@
 
         </div>
     </div>
+<div id="matrix-text" style="font-size:24px;font-family:monospace"></div>
 
+<script>
+  const chars = "01アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン";
+  const element = document.getElementById("matrix-text");
+  let iterations = 0;
+  
+  function matrixEffect() {
+    if(iterations++ < 30) {
+      let text = "";
+      for(let i = 0; i < 20; i++) {
+        text += chars[Math.floor(Math.random() * chars.length)];
+      }
+      element.innerHTML = text;
+      setTimeout(matrixEffect, 100);
+    } else {
+      element.innerHTML = "Добро пожаловать в матрицу";
+    }
+  }
+  matrixEffect();
+</script>
+    
 </body>
 </html>
