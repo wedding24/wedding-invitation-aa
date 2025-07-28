@@ -323,5 +323,21 @@
   }
 </style>
 
+    <div id="animated-text" style="font-size: 24px;"></div>
+
+<script>
+  const text = "Анимированный текст с JavaScript";
+  let i = 0;
+  const element = document.getElementById("animated-text");
+  
+  function typeWriter() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 100);
+    }
+  }
+  typeWriter();
+</script>
 </body>
 </html>
