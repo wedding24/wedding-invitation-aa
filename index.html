@@ -234,47 +234,6 @@
         </div>
     </div>
 
-    <script>
-  // Анимация движения текста
-  function animateTextElements() {
-    // 1. Волнообразное появление строк текста
-    const textLines = document.querySelectorAll('.text-line');
-    textLines.forEach((line, index) => {
-      line.style.opacity = '0';
-      line.style.transform = 'translateY(20px)';
-      line.style.transition = `all 0.8s ease ${index * 0.2}s`;
-      
-      setTimeout(() => {
-        line.style.opacity = '1';
-        line.style.transform = 'translateY(0)';
-      }, 500 + index * 200);
-    });
-
-    // 2. Плавное "дыхание" важного текста
-    const importantText = document.querySelectorAll('.important-text');
-    importantText.forEach(text => {
-      text.style.animation = 'textBreath 3s ease-in-out infinite';
-    });
-
-    // 4. Движение текста при наведении
-    const hoverText = document.querySelectorAll('.hover-move');
-    hoverText.forEach(text => {
-      text.addEventListener('mousemove', (e) => {
-        const x = e.offsetX / text.offsetWidth - 0.5;
-        const y = e.offsetY / text.offsetHeight - 0.5;
-        text.style.transform = `perspective(500px) rotateX(${y * 5}deg) rotateY(${x * 5}deg)`;
-      });
-      
-      text.addEventListener('mouseleave', () => {
-        text.style.transform = 'perspective(500px) rotateX(0) rotateY(0)';
-      });
-    });
-  }
-
-  // Инициализация после загрузки страницы
-  window.addEventListener('DOMContentLoaded', animateTextElements);
-</script>
-
 <style>
   /* Стили для анимации текста */
   .text-line {
